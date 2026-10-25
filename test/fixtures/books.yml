@@ -3,11 +3,11 @@
 one:
   title: MyString
   author: MyString
-  isbn: 1
+  isbn: 1234567890123
   publication_date: 2026-10-25
 
 two:
   title: MyString
   author: MyString
-  isbn: 1
+  isbn: 1234567890124
   publication_date: 2026-10-25

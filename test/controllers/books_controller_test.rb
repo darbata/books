@@ -12,7 +12,7 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
 
   test "should create book" do
     assert_difference("Book.count") do
-      post books_url, params: { book: { author: @book.author, isbn: @book.isbn, publication_date: @book.publication_date, title: @book.title } }, as: :json
+      post books_url, params: { book: { author: @book.author, isbn: 2234567890123, publication_date: @book.publication_date, title: @book.title } }, as: :json
     end
 
     assert_response :created
