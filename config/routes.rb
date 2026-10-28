@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resource :session
+  resource :session, only: [ :create, :destroy ]
   resources :passwords, param: :token
   resources :books
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
