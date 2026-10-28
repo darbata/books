@@ -10,8 +10,7 @@ class Book < ApplicationRecord
 
   def publication_date_in_range
     return if publication_date.blank?
-
-    unless publication_date > Date.new(1450, 1, 1) && publication_date < Date.current + 2.years
+    unless publication_date.between?(Date.new(1450, 1, 1), Date.current + 2.years)
       errors.add(:publication_date, "must be between 1450 and 2 years from now")
     end
   end

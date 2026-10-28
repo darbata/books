@@ -26,8 +26,8 @@ class BookTest < ActiveSupport::TestCase
   end
 
   test "book publication_date must be within 1450 and 2 years from the current date" do
-    book = Book.new(title: "book", author: "author", isbn: 9780000000001, publication_date: Date.current)
-    assert book.valid?   # sanity check: the baseline is valid
+    book = Book.new(title: "book", author: "author", isbn: 9780000000001, publication_date: Date.current, user: users(:one))
+    assert book.valid?, book.errors.full_messages.inspect
 
     book.publication_date = Date.new(1449, 1, 1)
     assert book.invalid?

@@ -3,7 +3,7 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.all
+    @books = Current.user.books
 
     render json: @books
   end
@@ -15,7 +15,7 @@ class BooksController < ApplicationController
 
   # POST /books
   def create
-    @book = Book.new(book_params)
+    @book = Current.user.books.new(book_params)
 
     if @book.save
       render json: @book, status: :created, location: @book
@@ -41,7 +41,7 @@ class BooksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
-      @book = Book.find(params.expect(:id))
+      @book = Current.user.books.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
