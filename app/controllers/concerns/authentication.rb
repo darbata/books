@@ -2,8 +2,8 @@ module Authentication
   extend ActiveSupport::Concern
 
   included do
+    include ActionController::HttpAuthentication::Token::ControllerMethods
     before_action :require_authentication
-    helper_method :authenticated?
   end
 
   class_methods do
@@ -22,11 +22,13 @@ module Authentication
     end
 
     def resume_session
-      Current.session ||= find_session_by_cookie
+      Current.session ||= find_session_by_token
     end
 
-    def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
+    def find_session_by_token
+      authenticate_with_http_token do |token, _options|
+        Session.find_by(token: token)
+      end
     end
 
     def request_authentication
