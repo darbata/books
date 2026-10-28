@@ -1,4 +1,6 @@
 class Book < ApplicationRecord
+  belongs_to :user
+
   validates :title, :author, :isbn, :publication_date, presence: true
   validates :isbn, uniqueness: true
   validate :publication_date_in_range

@@ -1,12 +1,14 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  user: one 
   title: MyString
   author: MyString
   isbn: 1234567890123
   publication_date: 2026-10-25
 
 two:
+  user: two
   title: MyString
   author: MyString
   isbn: 1234567890124
