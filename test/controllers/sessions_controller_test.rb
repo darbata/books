@@ -29,4 +29,19 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :no_content
   end
+
+  test "destroy with no token" do
+    assert_difference -> { @user.sessions.count }, 0 do
+      delete session_path, as: :json
+    end
+    assert_response :unauthorized
+  end
+
+  test "destroy with invalid token" do
+    headers = { "Authorization" => "Bearer invalid" }
+    assert_difference -> { @user.sessions.count }, 0 do
+      delete session_path, headers: headers, as: :json
+    end
+    assert_response :unauthorized
+  end
 end
