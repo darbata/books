@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
+  allow_unauthenticated_access only: %i[ create ]
   before_action :set_user, only: %i[ show update destroy ]
 
   # GET /users
   def index
+    # TODO: only admins can do this
     @users = User.all
 
     render json: @users
@@ -10,6 +12,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
+    head :unauthorized unless @user == Current.user
     render json: @user
   end
 
@@ -18,7 +21,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      new_session = start_new_session_for @user
+      render json: { users: @user, token: new_session.token }, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_content
     end
@@ -26,6 +30,8 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
+    head :unauthorized unless @user == Current.user
+
     if @user.update(user_params)
       render json: @user
     else
@@ -35,6 +41,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
+    head :unauthorized unless @user == Current.user
     @user.destroy!
   end
 
