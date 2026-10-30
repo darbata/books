@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    head :unauthorized unless @user == Current.user
+    return head :unauthorized unless @user == Current.user
     render json: @user
   end
 
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    head :unauthorized unless @user == Current.user
+    return head :unauthorized unless @user == Current.user
 
     if @user.update(user_params)
       render json: @user
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    head :unauthorized unless @user == Current.user
+    return head :unauthorized unless @user == Current.user
     @user.destroy!
   end
 
