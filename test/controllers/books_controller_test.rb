@@ -19,6 +19,31 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test "own column defaults to false" do
+    assert_difference("Book.count") do
+      post books_url, params: { book: { author: @book.author, isbn: 2234567890123, publication_date: @book.publication_date, title: @book.title } }, as: :json, headers: @headers
+    end
+
+    new_book = Book.find_by(isbn: 2234567890123)
+    assert_equal new_book.own, false
+
+    assert_response :created
+  end
+
+  test "can create owned book" do
+    assert_difference("Book.count") do
+      post books_url, params: { book: { author: @book.author, isbn: 2234567890123, publication_date: @book.publication_date, title: @book.title, own: true } }, as: :json, headers: @headers
+    end
+
+    new_book = Book.find_by(isbn: 2234567890123)
+
+    assert_equal new_book.own, true
+
+    assert_response :created
+
+  end
+
+
   test "should show book" do
     get book_url(@book), as: :json, headers: @headers
     assert_response :success
@@ -26,6 +51,16 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
 
   test "should update book" do
     patch book_url(@book), params: { book: { author: @book.author, isbn: @book.isbn, publication_date: @book.publication_date, title: @book.title } }, as: :json, headers: @headers
+    assert_response :success
+  end
+
+  test "user can update book own status" do
+    patch book_url(@book), params: { book: { author: @book.author, isbn: @book.isbn, publication_date: @book.publication_date, title: @book.title, own: true } }, as: :json, headers: @headers
+    assert_equal @book.reload.own, true
+
+    patch book_url(@book), params: { book: { author: @book.author, isbn: @book.isbn, publication_date: @book.publication_date, title: @book.title, own: false } }, as: :json, headers: @headers
+    assert_equal @book.reload.own, false
+
     assert_response :success
   end
 
