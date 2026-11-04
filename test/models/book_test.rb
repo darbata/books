@@ -37,4 +37,9 @@ class BookTest < ActiveSupport::TestCase
     assert book.invalid?
     assert_includes book.errors[:publication_date], "must be between 1450 and 2 years from now"
   end
+
+  test "book reading status defaults to want" do
+    book = Book.new(title: "book", author: "author", isbn: 9780000000001, publication_date: Date.current, user: users(:one))
+    assert_equal book.reading_status, "want"
+  end
 end

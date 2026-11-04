@@ -71,4 +71,19 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :no_content
   end
+
+  test "users can updated reading status to correct enumerated values" do
+    valid = ['want', 'reading', 'read', 'abandoned']
+
+    valid.each { |status|
+      patch book_url(@book), params: { book: { author: @book.author, isbn: @book.isbn, publication_date: @book.publication_date, title: @book.title, own: true, reading_status: status } }, as: :json, headers: @headers
+      assert @book.reload.valid?
+      assert_response :success
+    }
+
+    assert_raises(ArgumentError, match: /not a valid reading_status/i) do
+      patch book_url(@book), params: { book: { author: @book.author, isbn: @book.isbn, publication_date: @book.publication_date, title: @book.title, own: true, reading_status: 'invalid' } }, as: :json, headers: @headers
+    end
+    puts response.code
+  end
 end

@@ -6,6 +6,8 @@ class Book < ApplicationRecord
   validate :publication_date_in_range
   validate :isbn_is_thirteen_digits_long
 
+  enum :reading_status, { want: "want", reading: "reading", read: "read", abandoned: "abandoned" }, default: :want
+
   private
 
   def publication_date_in_range
